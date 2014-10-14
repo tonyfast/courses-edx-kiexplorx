@@ -1,0 +1,160 @@
+* Miscellany
+** Google Style Guide
+   https://google-styleguide.googlecode.com/svn/trunk/Rguide.xml
+** Standard deviation
+   http://www.mathsisfun.com/data/standard-deviation.html
+   stddev is a measure of spread
+   it is the square root of the variance
+*** Calculation
+    calculate the variance
+    take the square root of that
+*** For the normal distribution
+    68% of values are w/in ond stddev of the mean
+    95% are w/in two stddev
+    99.7% are w/in three stddev
+    So if we were to make a table...
+        -3s   -2s    -1s     u      1s     2s    3s
+    -----|-----|------|------|------|------|-----|-----
+     0.1 | 2.1 | 13.6 | 34.1 | 34.1 | 13.6 | 2.1 | 0.1
+** Variance
+   variance is another measure of spread
+   it is the avg of squared distances from the mean
+*** Why square the distances rather than use absolute value?
+    Because squaring give a larger result for more extreme values
+    For example...
+    1/4 * (|4| + |4| + |-4| + |-4|) = 4
+    1/4 * (|7| + |1| + |-6| + |-2|) = 4
+    But...
+    1/4 * (4^2 + 4^2 + -4^2 + -4^2) = 16
+    1/4 * (7^2 + 1^2 + -6^2 + -2^2) = 22.5
+*** Calcuation
+    calculate the mean
+    calculate the squared difference from the mean for each instance
+    (x - m)^2
+    calculate the mean of the squared difference (variance)
+    (dividing by N for entire population and N-1 for a sample)
+* R Basics
+*** Assignment
+    x <- 1
+*** Creating Vectors with Combine
+    a <- c(2,4,6,8)
+    yields: 2 4 6 8
+    b <- a + 2 
+    yields: 4 6 8 10
+    ab <- c(a, b)
+    yields: 2 4 6 8 4 6 8 10
+*** Plotting Vectors
+    barplot(a) # series bar plot
+    plot(a) # series plot
+    plot(a, b) # scatter plot
+    boxplot, pie, etc
+*** Misc Functions
+    mean(a)
+    median(a)
+    sd(a)
+    hist(sort(rnorm(10000)))
+*** Using Ranges
+    d <- c(1:10, 30:40, 5, 7, 9, 12)
+*** Getting Help
+    ?function()
+    example(function)
+* More on creating and accessing vectors
+** Vectors can be null
+   x <- NULL
+** Assigning a single value to a variable give a 1d vector
+   x <- 3
+   x == c(3) # TRUE
+** A vector can be combined with itself
+   x <- c(x, 5) # 3 5
+** Vectors can contain strings and booleans
+   b <- c("cass", "john", "neel", "sean")
+   c <- c(TRUE, FALSE, T, T, F)
+** Access by index
+   x <- c(1, 2, 3, 4, 5, 6, 7, 8)
+   x
+** Access by predicate
+   a <- c(1, 2, 3, 4, 5)
+   a[a>1 & a<5] # 2 3 4
+   b <- c(T, T, F)
+   b[b==T] # TRUE TRUE
+** Extracting positions
+   which(a>1 & a<5)
+* Sequences
+** Create a sequence with seq
+   seq(start, end, distance)
+** Create a sequence with :
+   2:6
+** Add a prefix to a sequence with paste
+   paste(prefix, sequence, sep=" ")
+   paste("A", 1:6, sep="")
+** Build a vector from repeating something
+   rep(vector, times)
+   rep(1:5, 3)
+   rep(letters[1:5], 3)
+** Take a sample from another object
+   sample(object, n_samples, replace=F)
+   sample(letters, 5, replace=T) # "d" "o" "o" "i" "o"
+** Take a random sample in a reproducible way
+   set.seed(200)
+   sample(letters, 5) # same sequence every time
+** Rolling dice
+   sample(1:6, 10, replace=T)
+* Exploring objects
+** Getting storage type with typeof
+   dice <- sample(1:6, 10, replace=T)
+   typeof(dice) # "integer"
+** Look at position zero
+   dice[0] # integer(0)
+   Other storage types for numbers are double and irrational
+** Inspecting structure with str
+   str(dice) # int [1:10] 2 6 2 3 5 6 6 1 1 4
+** Type matching with is
+   is.vector(dice) # TRUE
+** Head and tail
+   head(dice) # 2 6 2 3 5 6
+   tail(dice) # 5 6 6 1 1 4
+** Vector length
+   length(dice) # 10
+** Selection
+   which(dice > 6)
+** Other useful functions
+   max, min, plot, sd, str, summary
+* Matrices
+  Can only contain one type of content
+** Creating from a vector
+   M <- dice
+   dim(M) <- c(10, 5)
+** Transposition
+   TM <- t(M)
+** Assignment
+   "something" -> M[2, 1]
+   Note that this causes M to be converted to a matrix of string
+* Lists
+  Can contain elements of differing types
+** Creation
+   MyList <- list(M, a, dice)
+** Accessing
+   # get the second row of the matrix in the first element of the list
+   MyList[[[[1]]]][2,]
+* DataFrame
+  A list of vectors of equal length
+** Creation
+   When creating a data frame, strings automatically become factored
+   MyDataFrame <- data.frame(a, b, c)
+** Accessing column vectors in a frame
+   MyDataFrame$a
+   MyDataFrame[,1]
+** Accessing row vectors
+   MyDataFrame[1,]
+* Functions
+** Definition
+   circle_area <- function(r) {
+     r*r*pi
+   }
+** Application
+   # apply to a value
+   circle_area(5)
+   # apply to a vector
+   circle_area(a)
+   # plot a thing vs function of thing
+   plot(a, circle_area(a))
